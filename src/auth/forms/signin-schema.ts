@@ -5,7 +5,7 @@ import { z } from 'zod';
  */
 export const getSigninSchema = () =>
   z.object({
-    usuario: z.string().min(1, { message: 'Ingresa tu usuario' }),
+    usuario: z.string().min(1, { message: 'Ingresa tu correo o usuario' }),
     contrasena: z.string().min(1, { message: 'Ingresa tu contraseña' }),
     recordarme: z.boolean().optional(),
   });

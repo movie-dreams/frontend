@@ -7,7 +7,7 @@ interface AuthContextValue {
   loading: boolean;
   isAuthenticated: boolean;
   user?: UsuarioSesion;
-  login: (usuario: string, contrasena: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
   tieneRol: (...roles: string[]) => boolean;
 }

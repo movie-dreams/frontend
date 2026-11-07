@@ -1,8 +1,8 @@
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import { AuthContext } from '@/auth/context/auth-context';
 import { UsuarioSesion } from '@/types/auth';
-import { authService } from '@/services/auth.service';
 import { estaVencido, leerToken } from '@/lib/jwt';
+import { authService } from '@/services/auth.service';
 
 export function AuthProvider({ children }: PropsWithChildren) {
   // Empieza en true: hasta revisar el token no se sabe si hay sesion,
@@ -10,9 +10,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<UsuarioSesion | undefined>();
 
-  const login = useCallback(async (usuario: string, contrasena: string) => {
-    
-    const token = await authService.login({usuario, contrasena});
+  const login = useCallback(async (username: string, password: string) => {
+    const token = await authService.login({ username, password });
 
     const payload = leerToken(token);
 
@@ -24,11 +23,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     const sesion = {
       id: payload.id,
-      usuario: payload.usuario,
+      username: payload.username,
       roles: payload.roles,
-    }
-    console.log('sesion iniciada:', sesion);
-    
+    };
+
     setUser(sesion);
   }, []);
 
@@ -38,11 +36,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
     setUser(undefined);
   }, []);
 
-
   const tieneRol = useCallback(
-    (...roles: string[])  => roles.some((rol) => user?.roles.includes(rol)),
-    [user]
-  )
+    (...roles: string[]) => roles.some((rol) => user?.roles.includes(rol)),
+    [user],
+  );
 
   // Al recargar (F5) React pierde el estado, pero el token sigue en
   // localStorage: se lee de ahi para reconstruir la sesion
@@ -53,10 +50,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
     if (payload && !estaVencido(payload)) {
       setUser({
         id: payload.id,
-        usuario: payload.usuario,
+        username: payload.username,
         roles: payload.roles,
       });
-      console.log('>>> sesion restaurada tras F5:', payload.usuario);
     } else if (token) {
       // Token roto o vencido: ya no sirve, mejor no dejarlo guardado
       authService.borrarToken();

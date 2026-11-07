@@ -14,6 +14,8 @@ export interface MenuItem {
   expandTitle?: string;
   badge?: string;
   separator?: boolean;
+  /** Roles que pueden ver el item. Vacio/ausente = visible para todos. */
+  roles?: string[];
 }
 
 export type MenuConfig = MenuItem[];

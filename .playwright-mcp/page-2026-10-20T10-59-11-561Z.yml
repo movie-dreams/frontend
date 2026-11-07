@@ -1,0 +1,32 @@
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - generic [ref=e4]:
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - heading "Cine" [level=1] [ref=e10]
+        - paragraph [ref=e11]: Ingresa con tu usuario para continuar
+      - alert [ref=e34]:
+        - generic [ref=e38]: Credenciales no válidas
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: Correo o usuario
+          - textbox "Correo o usuario" [ref=e15]:
+            - /placeholder: tu@correo.com o tu.usuario
+            - text: ggguzman
+          - generic [ref=e16]: Puedes entrar con el correo de tu cuenta nueva o con el nombre de usuario de tu cuenta antigua.
+        - generic [ref=e17]:
+          - generic [ref=e18]: Contraseña
+          - generic [ref=e19]:
+            - textbox "••••••••" [ref=e20]: "123456"
+            - button "Mostrar contraseña" [ref=e21]
+        - button "Ingresar" [ref=e25] [cursor=pointer]
+      - paragraph [ref=e26]:
+        - text: ¿No tienes cuenta?
+        - link "Regístrate" [ref=e27] [cursor=pointer]:
+          - /url: /auth/signup
+    - generic [ref=e29]:
+      - link [ref=e30] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e31]:
+        - heading "Secure Dashboard Access" [level=3] [ref=e32]
+        - generic [ref=e33]: A robust authentication gateway ensuring secure efficient user access to the Metronic Dashboard interface.

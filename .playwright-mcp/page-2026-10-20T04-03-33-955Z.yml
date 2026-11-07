@@ -1,0 +1,36 @@
+- generic [ref=f77e2]:
+  - region "Notifications alt+T"
+  - generic [ref=f77e4]:
+    - generic [ref=f77e8]:
+      - generic [ref=f77e9]:
+        - heading "Crear cuenta" [level=1] [ref=f77e10]
+        - paragraph [ref=f77e11]: Regístrate para reservar tus butacas
+      - generic [ref=f77e12]:
+        - generic [ref=f77e13]:
+          - generic [ref=f77e14]: Correo
+          - textbox "Correo" [active] [invalid] [ref=f77e15]:
+            - /placeholder: ana@correo.com
+          - generic [ref=f77e45]: El correo es obligatorio
+        - generic [ref=f77e16]:
+          - generic [ref=f77e17]: Contraseña
+          - generic [ref=f77e18]:
+            - textbox "Contraseña" [invalid] [ref=f77e19]
+            - button "Mostrar contraseña" [ref=f77e20]
+          - generic [ref=f77e43]: La contraseña es obligatoria
+        - generic [ref=f77e25]:
+          - generic [ref=f77e26]: Repite la contraseña
+          - generic [ref=f77e27]:
+            - textbox "Repite la contraseña" [invalid] [ref=f77e28]
+            - button "Mostrar repetición de la contraseña" [ref=f77e29]
+          - generic [ref=f77e44]: La confirmación de contraseña es obligatoria
+        - button "Crear cuenta" [ref=f77e33] [cursor=pointer]
+      - paragraph [ref=f77e34]:
+        - text: ¿Ya tienes cuenta?
+        - link "Ingresa" [ref=f77e35] [cursor=pointer]:
+          - /url: /auth/signin
+    - generic [ref=f77e37]:
+      - link [ref=f77e38] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f77e39]:
+        - heading "Secure Dashboard Access" [level=3] [ref=f77e40]
+        - generic [ref=f77e41]: A robust authentication gateway ensuring secure efficient user access to the Metronic Dashboard interface.

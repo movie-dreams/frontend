@@ -1,0 +1,20 @@
+- generic [ref=f5e2]:
+  - region "Notifications alt+T"
+  - banner [ref=f5e4]:
+    - generic [ref=f5e5]:
+      - link "CINE" [ref=f5e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=f5e7]:
+        - link "Pelicula" [ref=f5e8] [cursor=pointer]:
+          - /url: /pelicula
+      - link "Ingresar" [ref=f5e9] [cursor=pointer]:
+        - /url: /auth/signin
+  - main [ref=f5e10]:
+    - generic [ref=f5e12]:
+      - generic [ref=f5e13]:
+        - heading "Película" [level=1] [ref=f5e14]
+        - link "Agregar película" [ref=f5e15] [cursor=pointer]:
+          - /url: /peliculas/nueva
+      - paragraph [ref=f5e16]: Cargando pelicula....
+  - contentinfo [ref=f5e17]:
+    - paragraph [ref=f5e19]: Cine

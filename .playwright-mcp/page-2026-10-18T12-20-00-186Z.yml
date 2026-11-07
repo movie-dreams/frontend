@@ -1,0 +1,24 @@
+- generic [ref=f2e2]:
+  - region "Notifications alt+T"
+  - generic [ref=f2e4]:
+    - generic [ref=f2e8]:
+      - generic [ref=f2e9]:
+        - heading "Cine" [level=1] [ref=f2e10]
+        - paragraph [ref=f2e11]: Ingresa con tu usuario para continuar
+      - generic [ref=f2e12]:
+        - generic [ref=f2e13]:
+          - generic [ref=f2e14]: Usuario
+          - textbox "Usuario" [ref=f2e15]:
+            - /placeholder: tu.usuario
+        - generic [ref=f2e16]:
+          - generic [ref=f2e17]: Contraseña
+          - generic [ref=f2e18]:
+            - textbox "••••••••" [ref=f2e19]
+            - button "Mostrar contraseña" [ref=f2e20]
+        - button "Ingresar" [ref=f2e24] [cursor=pointer]
+    - generic [ref=f2e26]:
+      - link [ref=f2e27] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f2e28]:
+        - heading "Secure Dashboard Access" [level=3] [ref=f2e29]
+        - generic [ref=f2e30]: A robust authentication gateway ensuring secure efficient user access to the Metronic Dashboard interface.

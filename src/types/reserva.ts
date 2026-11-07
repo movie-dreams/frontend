@@ -1,56 +1,84 @@
+import { PaginatedResponse, SuccessResponse } from './api';
 
 export type EstadoReserva = 'PENDIENTE' | 'CONFIRMADA' | 'CANCELADA';
 
-// post /reservas (requiere token de CLIENTE)
-// Lo que se envia
+// ============================================================
+// Reservas  ->  CRUD /reservations
+// ============================================================
 
-// Un asiento dentro de la reserva
-export interface DetalleReserva {
-    idAsiento: number;
-    precio: number;
+// Un asiento dentro del cuerpo de la reserva (ReservationSeatDetailDto).
+// En el backend el campo es seatId, no idAsiento.
+export interface DetalleReservaPayload {
+  seatId: number;
+  price: number;
 }
 
+// POST /reservations (CreateReservationDto). La fecha la genera el backend:
+// no se envia reservationDate.
 export interface CrearReserva {
-    // Sale del token (user.id): en el backend el cliente usa el mismo id
-    // que la persona. Nunca de un input, o se podria reservar a nombre de otro
-    idCliente: number;
-    idFuncion: number;
-    fechaReserva: string; // ISO: new Date().toISOString()
-    // Al enviar se llama codigoReserva; al responder viene como "codigo"
-    codigoReserva: string;
-    estado: EstadoReserva;
-    // El backend acepta el total que le mandemos: se calcula siempre
-    // con funcion.precio, nunca de algo que el usuario pueda tocar
-    total: number;
-    detalles: DetalleReserva[];
+  clientId: number;
+  showtimeId: number;
+  reservationCode: string;
+  status: EstadoReserva;
+  total: number;
+  details: DetalleReservaPayload[];
 }
 
-// Lo que responde: lo mismo que se guardo, ya con su id
-
-export interface ReservaRespuesta {
-    id: number;
-    idCliente: number;
-    idFuncion: number;
-    fechaReserva: string;
-    codigo: string; // aqui ya no se llama codigoReserva
-    estado: EstadoReserva;
-    total: number;
+// PATCH /reservations/:id (UpdateReservationDto, sin details)
+export interface ActualizarReserva {
+  clientId?: number;
+  showtimeId?: number;
+  reservationCode?: string;
+  status?: EstadoReserva;
+  total?: number;
 }
 
-export interface DetalleRespuesta {
-    id: number;
-    idReserva: number;
-    idAsiento: number;
-    precio: number;
+// ReservationDetail (respuesta)
+export interface DetalleReserva {
+  id: number;
+  reservationId: number;
+  seatId: number;
+  price: number;
 }
 
-// Viene anidada: el codigo esta en data.reserva.codigo, no en data.codigo
-// POST /reservas
-export interface ReservaCreada{
-    status: string;
-    message?: string;
-    data: {
-        reserva: ReservaRespuesta;
-        detalles: DetalleRespuesta[];
-    };
+// Reservation (respuesta)
+export interface Reserva {
+  id: number;
+  clientId: number;
+  showtimeId: number;
+  reservationDate: string;
+  reservationCode: string;
+  status: string;
+  total: number;
+  details?: DetalleReserva[];
 }
+
+// data de POST /reservations (ReservationCreatedDto): el codigo queda en
+// data.reservation.reservationCode.
+export interface ReservaCreada {
+  reservation: Reserva;
+  details: DetalleReserva[];
+}
+
+export type RespuestaReserva = SuccessResponse<Reserva>;
+export type RespuestaReservaCreada = SuccessResponse<ReservaCreada>;
+export type RespuestaReservas = SuccessResponse<Reserva[]>;
+export type PaginaReservas = PaginatedResponse<Reserva>;
+
+// ============================================================
+// Detalles de reserva  ->  CRUD /reservation-details
+// ============================================================
+
+// POST /reservation-details (CreateReservationDetailDto)
+export interface CrearDetalleReserva {
+  reservationId: number;
+  seatId: number;
+  price: number;
+}
+
+// PATCH /reservation-details/:id
+export type ActualizarDetalleReserva = Partial<CrearDetalleReserva>;
+
+export type RespuestaDetalleReserva = SuccessResponse<DetalleReserva>;
+export type RespuestaDetallesReserva = SuccessResponse<DetalleReserva[]>;
+export type PaginaDetallesReserva = PaginatedResponse<DetalleReserva>;

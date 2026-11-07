@@ -27,14 +27,14 @@ export const MENU_SIDEBAR: MenuConfig = [
   {
     title: 'Funciones',
     icon: CalendarDays,
-    path: '/cartelera',
-    // disabled: true,
+    path: '/funciones',
+    roles: ['Administrador', 'Gerente'],
   },
   {
     title: 'Películas',
     icon: Clapperboard,
     path: '/peliculas',
-    // disabled: true,
+    roles: ['Administrador', 'Gerente'],
   },
   { heading: 'Ventas' },
   {
@@ -54,7 +54,7 @@ export const MENU_SIDEBAR: MenuConfig = [
     title: 'Personas',
     icon: Users,
     path: '/personas',
-    disabled: true,
+    roles: ['Administrador', 'Gerente'],
   },
   {
     title: 'Roles',
@@ -67,8 +67,8 @@ export const MENU_SIDEBAR: MenuConfig = [
 /** El menú superior reutiliza las mismas entradas: no hay mega menú que mantener. */
 export const MENU_MEGA: MenuConfig = [
   { title: 'Inicio', path: '/' },
-  { title: 'Cartelera', path: '/cartelera'},
-  { title: 'Películas', path: '/peliculas'},
+  { title: 'Funciones', path: '/funciones', roles: ['Administrador', 'Gerente']},
+  { title: 'Películas', path: '/peliculas', roles: ['Administrador', 'Gerente']},
 ];
 
 export const MENU_MEGA_MOBILE: MenuConfig = MENU_MEGA;

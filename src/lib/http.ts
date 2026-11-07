@@ -23,14 +23,39 @@ http.interceptors.request.use((config) => {
 
 
 
+// Error de la API con el codigo HTTP adjunto: las pantallas lo usan para
+// decidir que solucion mostrar (401 sesion vencida, 403 sin permisos, etc.).
+export class HttpError extends Error {
+    status?: number;
+
+    constructor(mensaje: string, status?: number) {
+        super(mensaje);
+        this.name = 'HttpError';
+        this.status = status;
+    }
+}
+
+// El backend no siempre responde igual: los guards devuelven
+// {statusCode, message}, la validacion devuelve message como arreglo y los
+// servicios {status, message}. Aqui se deja siempre un texto legible.
+function normalizarMensaje(message: unknown): string {
+    if (Array.isArray(message)) {
+        return message.join('. ');
+    }
+    if (typeof message === 'string' && message.trim()) {
+        return message;
+    }
+    return 'No se puede conectar con el servidor';
+}
+
 http.interceptors.response.use(
     // si sale bien
     (respuesta) => respuesta,
     // si sale mal
     (error) => {
-         // backend responde {status, message, timestamp}
-        const mensaje = error.response?.data?.message ?? 'No se puede conectar con el servidor';
-        return Promise.reject(new Error(mensaje));
+        // backend responde {status, message, timestamp} o el formato de Nest
+        const mensaje = normalizarMensaje(error.response?.data?.message);
+        return Promise.reject(new HttpError(mensaje, error.response?.status));
     },
 )
 

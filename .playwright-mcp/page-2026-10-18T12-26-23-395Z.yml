@@ -1,0 +1,31 @@
+- generic [ref=f4e2]:
+  - region "Notifications alt+T"
+  - generic [ref=f4e5]:
+    - banner [ref=f4e6]:
+      - generic [ref=f4e7]:
+        - generic [ref=f4e8]:
+          - link [ref=f4e9] [cursor=pointer]:
+            - /url: /
+            - img "mini-logo" [ref=f4e10]
+          - generic [ref=f4e11]:
+            - button [ref=f4e12] [cursor=pointer]
+            - button [ref=f4e14] [cursor=pointer]
+        - img "User Avatar" [ref=f4e19] [cursor=pointer]
+    - main [ref=f4e20]
+    - contentinfo [ref=f4e21]:
+      - generic [ref=f4e23]:
+        - generic [ref=f4e24]:
+          - generic [ref=f4e25]: 2026 ©
+          - link "Keenthemes Inc." [ref=f4e26] [cursor=pointer]:
+            - /url: https://keenthemes.com
+        - navigation [ref=f4e27]:
+          - link "Docs" [ref=f4e28] [cursor=pointer]:
+            - /url: ""
+          - link "Purchase" [ref=f4e29] [cursor=pointer]:
+            - /url: https://1.envato.market/Vm7VRE
+          - link "FAQ" [ref=f4e30] [cursor=pointer]:
+            - /url: https://keenthemes.com/metronic
+          - link "Support" [ref=f4e31] [cursor=pointer]:
+            - /url: https://devs.keenthemes.com
+          - link "License" [ref=f4e32] [cursor=pointer]:
+            - /url: ""

@@ -1,0 +1,51 @@
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - generic [ref=e5]:
+    - banner [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - link [ref=e9] [cursor=pointer]:
+            - /url: /
+            - img "mini-logo" [ref=e10]
+          - generic [ref=e11]:
+            - button [ref=e12] [cursor=pointer]
+            - button [ref=e14] [cursor=pointer]
+        - img "User Avatar" [ref=e19] [cursor=pointer]
+    - main [ref=e20]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - heading "Hola, gguzman" [level=1] [ref=e36]
+          - paragraph [ref=e37]: Plantilla lista. Las secciones de abajo todavia no estan armadas.
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - heading "Cartelera" [level=3] [ref=e41]
+            - generic [ref=e42]:
+              - paragraph [ref=e43]: Funciones disponibles por pelicula, sala y horario
+              - paragraph [ref=e44]: Pendiente
+          - generic [ref=e45]:
+            - heading "Peliculas" [level=3] [ref=e47]
+            - generic [ref=e48]:
+              - paragraph [ref=e49]: Catalogo con sus imagenes
+              - paragraph [ref=e50]: Pendiente
+          - generic [ref=e51]:
+            - heading "Reservas" [level=3] [ref=e53]
+            - generic [ref=e54]:
+              - paragraph [ref=e55]: Seleccion de asientos y registro de la reserva
+              - paragraph [ref=e56]: Pendiente
+    - contentinfo [ref=e21]:
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: 2026 ©
+          - link "Keenthemes Inc." [ref=e26] [cursor=pointer]:
+            - /url: https://keenthemes.com
+        - navigation [ref=e27]:
+          - link "Docs" [ref=e28] [cursor=pointer]:
+            - /url: ""
+          - link "Purchase" [ref=e29] [cursor=pointer]:
+            - /url: https://1.envato.market/Vm7VRE
+          - link "FAQ" [ref=e30] [cursor=pointer]:
+            - /url: https://keenthemes.com/metronic
+          - link "Support" [ref=e31] [cursor=pointer]:
+            - /url: https://devs.keenthemes.com
+          - link "License" [ref=e32] [cursor=pointer]:
+            - /url: ""

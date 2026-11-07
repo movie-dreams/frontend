@@ -3,12 +3,13 @@ import { useAuth } from '@/auth/context/auth-context';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
+import { normalizeCredential } from '@/lib/credentials';
 import { getSigninSchema, SigninSchemaType } from '../forms/signin-schema';
 
 export function SignInPage() {
@@ -43,7 +45,10 @@ export function SignInPage() {
       setProcesando(true);
       setError(null);
 
-      await login(values.usuario, values.contrasena);
+      // El correo de las cuentas nuevas se normaliza; el nombre de usuario de
+      // las cuentas antiguas conserva sus mayúsculas.
+      const credencial = normalizeCredential(values.usuario);
+      await login(credencial, values.contrasena);
 
       // Vuelve a donde el usuario quería entrar antes del login
       navigate(searchParams.get('next') || '/peliculas');
@@ -83,15 +88,19 @@ export function SignInPage() {
             name="usuario"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Usuario</FormLabel>
+                <FormLabel>Correo o usuario</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="tu.usuario"
+                    placeholder="tu@correo.com o tu.usuario"
                     autoComplete="username"
                     disabled={procesando}
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>
+                  Puedes entrar con el correo de tu cuenta nueva o con el
+                  nombre de usuario de tu cuenta antigua.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -141,6 +150,13 @@ export function SignInPage() {
           </Button>
         </form>
       </Form>
+
+      <p className="text-center text-sm text-muted-foreground">
+        ¿No tienes cuenta?{' '}
+        <Link to="/auth/signup" className="font-medium text-primary hover:underline">
+          Regístrate
+        </Link>
+      </p>
     </div>
   );
 }

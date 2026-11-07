@@ -1,28 +1,35 @@
+import { SuccessResponse } from './api';
 
+// POST /auth/login (LoginDto)
 export interface Credenciales {
-    usuario: string;
-    contrasena: string;
+  username: string;
+  password: string;
 }
 
-export interface RespuestaLogin {
-  status: string;
-  message?: string;
-  data: { 
-    token: string
-  };
+// data de la respuesta de login (TokenResponseDto)
+export interface TokenResponse {
+  token: string;
 }
 
-export interface PayloadToken {
-        id: number;
-        usuario: string;
-        roles:string[];
-        iat: number;
-        exp: number;
+export type RespuestaLogin = SuccessResponse<TokenResponse>;
+
+// GET /auth/me y payload del JWT (JwtPayload). Ojo: el claim es "username",
+// no "usuario".
+export interface UsuarioAutenticado {
+  id: number;
+  username: string;
+  roles: string[];
 }
 
-// no viene de ningun lado 
-export interface UsuarioSesion {
-    id: number;
-    usuario: string;
-    roles: string[];
+export interface PayloadToken extends UsuarioAutenticado {
+  iat?: number;
+  exp?: number;
 }
+
+export type RespuestaMe = SuccessResponse<UsuarioAutenticado>;
+
+// Sesion que guarda el proveedor en memoria.
+export type UsuarioSesion = UsuarioAutenticado;
+
+// Nombres exactos que usa el backend (role.enum).
+export type NombreRol = 'Administrador' | 'Gerente' | 'Cliente';

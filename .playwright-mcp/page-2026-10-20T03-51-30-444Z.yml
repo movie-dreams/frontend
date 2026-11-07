@@ -1,0 +1,34 @@
+- generic [ref=f40e2]:
+  - region "Notifications alt+T"
+  - generic [ref=f40e5]:
+    - generic [ref=f40e9]:
+      - generic [ref=f40e10]:
+        - heading "Crear cuenta" [level=1] [ref=f40e11]
+        - paragraph [ref=f40e12]: Regístrate para reservar tus butacas
+      - generic [ref=f40e13]:
+        - generic [ref=f40e14]:
+          - generic [ref=f40e15]: Correo
+          - textbox "Correo" [ref=f40e16]:
+            - /placeholder: ana@correo.com
+        - generic [ref=f40e17]:
+          - generic [ref=f40e18]: Contraseña
+          - generic [ref=f40e19]:
+            - textbox "Contraseña" [ref=f40e20]
+            - button "Mostrar contraseña" [ref=f40e21]
+          - generic [ref=f40e25]: Entre 6 y 100 caracteres
+        - generic [ref=f40e26]:
+          - generic [ref=f40e27]: Repite la contraseña
+          - generic [ref=f40e28]:
+            - textbox "Repite la contraseña" [ref=f40e29]
+            - button "Mostrar repetición de la contraseña" [ref=f40e30]
+        - button "Crear cuenta" [ref=f40e34] [cursor=pointer]
+      - paragraph [ref=f40e35]:
+        - text: ¿Ya tienes cuenta?
+        - link "Ingresa" [ref=f40e36] [cursor=pointer]:
+          - /url: /auth/signin
+    - generic [ref=f40e38]:
+      - link [ref=f40e39] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f40e40]:
+        - heading "Secure Dashboard Access" [level=3] [ref=f40e41]
+        - generic [ref=f40e42]: A robust authentication gateway ensuring secure efficient user access to the Metronic Dashboard interface.

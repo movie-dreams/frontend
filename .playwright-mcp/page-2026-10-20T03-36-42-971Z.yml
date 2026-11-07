@@ -1,0 +1,92 @@
+- generic [ref=f8e2]:
+  - region "Notifications alt+T"
+  - banner [ref=f8e5]:
+    - generic [ref=f8e6]:
+      - link "CINE" [ref=f8e7] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=f8e8]:
+        - link "Pelicula" [ref=f8e9] [cursor=pointer]:
+          - /url: /pelicula
+      - link "Ingresar" [ref=f8e10] [cursor=pointer]:
+        - /url: /auth/signin
+  - main [ref=f8e11]:
+    - generic [ref=f8e13]:
+      - generic [ref=f8e14]:
+        - heading "Película" [level=1] [ref=f8e15]
+        - link "Agregar película" [ref=f8e16] [cursor=pointer]:
+          - /url: /peliculas/nueva
+      - generic [ref=f8e21]:
+        - article [ref=f8e22]:
+          - link "Sin imagen VENGADORES 3h 0m" [ref=f8e23] [cursor=pointer]:
+            - /url: /peliculas/1
+            - generic [ref=f8e24]: Sin imagen
+            - heading "VENGADORES" [level=2] [ref=f8e26]
+            - paragraph [ref=f8e27]: 3h 0m
+        - article [ref=f8e28]:
+          - link "Sin imagen BATMAN2026 2h 30m" [ref=f8e29] [cursor=pointer]:
+            - /url: /peliculas/2
+            - generic [ref=f8e30]: Sin imagen
+            - heading "BATMAN2026" [level=2] [ref=f8e32]
+            - paragraph [ref=f8e33]: 2h 30m
+        - article [ref=f8e34]:
+          - link "Sin imagen MATRIX5 2h 50m" [ref=f8e35] [cursor=pointer]:
+            - /url: /peliculas/3
+            - generic [ref=f8e36]: Sin imagen
+            - heading "MATRIX5" [level=2] [ref=f8e38]
+            - paragraph [ref=f8e39]: 2h 50m
+        - article [ref=f8e40]:
+          - link "Sin imagen JURASSICX 2h 40m" [ref=f8e41] [cursor=pointer]:
+            - /url: /peliculas/4
+            - generic [ref=f8e42]: Sin imagen
+            - heading "JURASSICX" [level=2] [ref=f8e44]
+            - paragraph [ref=f8e45]: 2h 40m
+        - article [ref=f8e46]:
+          - link "Sin imagen SPIDERMAN2026 2h 20m" [ref=f8e47] [cursor=pointer]:
+            - /url: /peliculas/5
+            - generic [ref=f8e48]: Sin imagen
+            - heading "SPIDERMAN2026" [level=2] [ref=f8e50]
+            - paragraph [ref=f8e51]: 2h 20m
+        - article [ref=f8e52]:
+          - link "Sin imagen AVATAR3 3h 10m" [ref=f8e53] [cursor=pointer]:
+            - /url: /peliculas/6
+            - generic [ref=f8e54]: Sin imagen
+            - heading "AVATAR3" [level=2] [ref=f8e56]
+            - paragraph [ref=f8e57]: 3h 10m
+        - article [ref=f8e58]:
+          - link "Sin imagen INTERSTELLAR2 2h 55m" [ref=f8e59] [cursor=pointer]:
+            - /url: /peliculas/7
+            - generic [ref=f8e60]: Sin imagen
+            - heading "INTERSTELLAR2" [level=2] [ref=f8e62]
+            - paragraph [ref=f8e63]: 2h 55m
+        - article [ref=f8e64]:
+          - link "Sin imagen GLADIATOR2 2h 35m" [ref=f8e65] [cursor=pointer]:
+            - /url: /peliculas/8
+            - generic [ref=f8e66]: Sin imagen
+            - heading "GLADIATOR2" [level=2] [ref=f8e68]
+            - paragraph [ref=f8e69]: 2h 35m
+        - article [ref=f8e70]:
+          - link "Sin imagen TOYSTORY5 1h 50m" [ref=f8e71] [cursor=pointer]:
+            - /url: /peliculas/9
+            - generic [ref=f8e72]: Sin imagen
+            - heading "TOYSTORY5" [level=2] [ref=f8e74]
+            - paragraph [ref=f8e75]: 1h 50m
+        - article [ref=f8e76]:
+          - link "Sin imagen BARBIE2 2h 0m" [ref=f8e77] [cursor=pointer]:
+            - /url: /peliculas/10
+            - generic [ref=f8e78]: Sin imagen
+            - heading "BARBIE2" [level=2] [ref=f8e80]
+            - paragraph [ref=f8e81]: 2h 0m
+        - article [ref=f8e82]:
+          - link [ref=f8e83] [cursor=pointer]:
+            - /url: /peliculas/12
+            - img "DRAGON BALL SUPER BROLY" [ref=f8e85]
+            - heading "DRAGON BALL SUPER BROLY" [level=2] [ref=f8e86]
+            - paragraph [ref=f8e87]: 2h 0m
+        - article [ref=f8e88]:
+          - link [ref=f8e89] [cursor=pointer]:
+            - /url: /peliculas/19
+            - 'img "DRAGON BALL Z: BROLY – EL LEGENDARIO SUPER SAIYAJIN" [ref=f8e91]'
+            - 'heading "DRAGON BALL Z: BROLY – EL LEGENDARIO SUPER SAIYAJIN" [level=2] [ref=f8e92]'
+            - paragraph [ref=f8e93]: 1h 12m
+  - contentinfo [ref=f8e18]:
+    - paragraph [ref=f8e20]: Cine

@@ -1,0 +1,15 @@
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "CINE" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "Pelicula" [ref=e8] [cursor=pointer]:
+          - /url: /pelicula
+      - link "Ingresar" [ref=e9] [cursor=pointer]:
+        - /url: /auth/signin
+  - main [ref=e10]:
+    - paragraph [ref=e12]: Cargando pelicula....
+  - contentinfo [ref=e13]:
+    - paragraph [ref=e15]: Cine

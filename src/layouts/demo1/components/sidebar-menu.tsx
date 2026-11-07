@@ -4,6 +4,7 @@ import { JSX, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MENU_SIDEBAR } from '@/config/menu.config';
 import { MenuConfig, MenuItem } from '@/config/types';
+import { useAuth } from '@/auth/context/auth-context';
 import { cn } from '@/lib/utils';
 import {
   AccordionMenu,
@@ -19,6 +20,19 @@ import { Badge } from '@/components/ui/badge';
 
 export function SidebarMenu() {
   const { pathname } = useLocation();
+  const { tieneRol } = useAuth();
+
+  // Oculta del menu los items que exigen un rol que el usuario no tiene.
+  // Se aplica en profundidad para que tambien funcione en submenus.
+  const filtrarPorRol = (items: MenuConfig): MenuConfig =>
+    items
+      .filter((item) => !item.roles?.length || tieneRol(...item.roles))
+      .map((item) =>
+        item.children
+          ? { ...item, children: filtrarPorRol(item.children) }
+          : item,
+      );
+
   // Memoize matchPath to prevent unnecessary re-renders
   const matchPath = useCallback(
     (path: string): boolean =>
@@ -217,7 +231,7 @@ export function SidebarMenu() {
         collapsible
         classNames={classNames}
       >
-        {buildMenu(MENU_SIDEBAR)}
+        {buildMenu(filtrarPorRol(MENU_SIDEBAR))}
       </AccordionMenu>
     </div>
   );

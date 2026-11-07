@@ -32,7 +32,7 @@ export function UserDropdownMenu({ trigger }: { trigger: ReactNode }) {
   const { currenLanguage, changeLanguage } = useLanguage();
   const { theme, setTheme } = useTheme();
 
-  const nombre = user?.usuario ?? 'Usuario';
+  const nombre = user?.username ?? 'Usuario';
 
   return (
     <DropdownMenu>

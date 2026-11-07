@@ -11,7 +11,7 @@ export function ScreenLoader() {
         alt="logo"
       />
       <div className="text-muted-foreground font-medium text-sm">
-        Loading...
+        Cargando…
       </div>
     </div>
   );

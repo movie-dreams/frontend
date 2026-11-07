@@ -1,26 +1,53 @@
-import { http } from "@/lib/http";
-import { Funcion, Sala, Asiento } from "@/types/cartelera";
+import { http } from '@/lib/http';
+import { SuccessResponse } from '@/types/api';
+import {
+  Funcion,
+  RespuestaAsientos,
+  RespuestaFunciones,
+  RespuestaResumenSalas,
+  RespuestaSalas,
+} from '@/types/cartelera';
 
-
-// llamada a la api de cartelera
+// Lecturas publicas de cartelera. El backend las agrupa bajo /billboard.
 export const carteleraService = {
+  // GET /billboard/showtimes?movieId=  (todas las funciones o las de una pelicula)
+  async listarFunciones(movieId?: number): Promise<SuccessResponse<Funcion[]>> {
+    const { data } = await http.get<RespuestaFunciones>(
+      '/billboard/showtimes',
+      { params: { movieId } },
+    );
+    return data;
+  },
 
-    // trae las funciones de de la pelicula
-    async listarFunciones(idPelicula?: number): Promise<Funcion[]> {
-        const {data} = await http.get<Funcion[]>('/cartelera/funciones', {
-            params: {idPelicula}
-        });
-        return data;
-    },
+  // GET /billboard/rooms?onlyActive=
+  async listarSalas(onlyActive?: boolean): Promise<RespuestaSalas> {
+    const { data } = await http.get<RespuestaSalas>('/billboard/rooms', {
+      params: { onlyActive },
+    });
+    return data;
+  },
 
-    //  trae las salas del cine
-    async listarSalas(): Promise<Sala[]> {
-        const {data} = await http.get<Sala[]>('/cartelera/saltas');
-        return data;
-    },
+  // GET /billboard/rooms/summary
+  async resumenSalas(): Promise<RespuestaResumenSalas> {
+    const { data } = await http.get<RespuestaResumenSalas>(
+      '/billboard/rooms/summary',
+    );
+    return data;
+  },
 
-    async asientosDeFuncion(idFuncion: number): Promise<Asiento[]>{
-        const {data} = await http.get<Asiento[]>(`/cartelera/funciones/${idFuncion}/asientos`);
-        return data;
-    }
-}
+  // GET /billboard/seats?roomId=
+  async listarAsientos(roomId?: number): Promise<RespuestaAsientos> {
+    const { data } = await http.get<RespuestaAsientos>('/billboard/seats', {
+      params: { roomId },
+    });
+    return data;
+  },
+
+  // GET /billboard/showtimes/:id/seats  (trae el flag available)
+  async asientosDeFuncion(idFuncion: number): Promise<RespuestaAsientos> {
+    const { data } = await http.get<RespuestaAsientos>(
+      `/billboard/showtimes/${idFuncion}/seats`,
+    );
+    return data;
+  },
+};

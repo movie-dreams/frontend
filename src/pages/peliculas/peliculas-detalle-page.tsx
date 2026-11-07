@@ -25,7 +25,7 @@ export function PeliculasDellatePage() {
         ])
             .then(([peliculaHallada, funcionesHalladas]) => {
                 setPelicula(peliculaHallada);
-                setFunciones(funcionesHalladas);
+                setFunciones(funcionesHalladas.data);
             })
             .catch((e: Error) => setError(e.message))
             .finally(() => setCargando(false))
@@ -59,7 +59,7 @@ export function PeliculasDellatePage() {
     }
 
 
-    const poster = pelicula.imagenes[0];
+    const poster = pelicula.images?.[0]?.fileName;
     return (
         <Container>
             <div className="py-8">
@@ -78,14 +78,14 @@ export function PeliculasDellatePage() {
                     <div className="space-y-6">
                         <div>
                             <h1 className="text-2xl font-semibold tracking-tight text-mono">
-                                {pelicula.titulo}
+                                {pelicula.title}
                             </h1>
                             <p className="mt-1 text-sm text-muted-foreground">
-                                fecha holasas
+                                {pelicula.releaseDate?.slice(0, 10)}
                             </p>
                         </div>
                         <p className="text-sm leading-relaxed text-secondary-foreground">
-                            {pelicula.sinopsis}
+                            {pelicula.synopsis}
                         </p>
                         <div>
                             <h2 className="text-sm font-semibold uppercase tracking-wide text-mono">
@@ -100,18 +100,18 @@ export function PeliculasDellatePage() {
                                     {funciones.map((funcion) => (
                                         // Link y no div: toda la tarjeta lleva al mapa de butacas de esa funcion
                                         <Link
-                                            key={funcion.idFuncion}
-                                            to={`/funciones/${funcion.idFuncion}`}
+                                            key={funcion.id}
+                                            to={`/funciones/${funcion.id}`}
                                             className='rounded-lg border border-border px-4 py-3 transition-colors hover:border-primary'
                                         >
                                             <p className="text-base font-medium text-mono">
-                                               Hora Inicio {funcion.horaInicio.slice(0, 5)}
+                                               Hora Inicio {funcion.startTime.slice(0, 5)}
                                             </p>
                                             <p className="mt-1 text-xs text-muted-foreground">
-                                               Precio {funcion.precio}
+                                               Precio {funcion.price}
                                             </p>
                                             <p className="mt-1 text-xs text-muted-foreground">
-                                              Salas  {funcion.sala} - {funcion.tipoSala}
+                                              Salas  {funcion.room} - {funcion.roomType}
                                             </p>
                                             <p className="mt-2 text-sm font-semibold text-mono">
                                             </p>

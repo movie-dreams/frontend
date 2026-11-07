@@ -36,7 +36,7 @@ export function CineHomePage() {
       <div className="space-y-6 py-6">
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold tracking-tight">
-            Hola, {user?.usuario ?? 'invitado'}
+            Hola, {user?.username ?? 'invitado'}
           </h1>
           <p className="text-sm text-muted-foreground">
             Plantilla lista. Las secciones de abajo todavia no estan armadas.

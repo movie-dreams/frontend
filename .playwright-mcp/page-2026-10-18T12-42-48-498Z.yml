@@ -1,0 +1,83 @@
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "CINE" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "Pelicula" [ref=e8] [cursor=pointer]:
+          - /url: /pelicula
+      - link "Ingresar" [ref=e9] [cursor=pointer]:
+        - /url: /auth/signin
+  - main [ref=e10]:
+    - generic [ref=e12]:
+      - heading "Película" [level=1] [ref=e14]
+      - generic [ref=e19]:
+        - article [ref=e20]:
+          - link "Sin imagen VENGADORES 3h 0m" [ref=e21] [cursor=pointer]:
+            - /url: /peliculas/1
+            - generic [ref=e22]: Sin imagen
+            - heading "VENGADORES" [level=2] [ref=e24]
+            - paragraph [ref=e25]: 3h 0m
+        - article [ref=e26]:
+          - link "Sin imagen BATMAN2026 2h 30m" [ref=e27] [cursor=pointer]:
+            - /url: /peliculas/2
+            - generic [ref=e28]: Sin imagen
+            - heading "BATMAN2026" [level=2] [ref=e30]
+            - paragraph [ref=e31]: 2h 30m
+        - article [ref=e32]:
+          - link "Sin imagen MATRIX5 2h 50m" [ref=e33] [cursor=pointer]:
+            - /url: /peliculas/3
+            - generic [ref=e34]: Sin imagen
+            - heading "MATRIX5" [level=2] [ref=e36]
+            - paragraph [ref=e37]: 2h 50m
+        - article [ref=e38]:
+          - link "Sin imagen JURASSICX 2h 40m" [ref=e39] [cursor=pointer]:
+            - /url: /peliculas/4
+            - generic [ref=e40]: Sin imagen
+            - heading "JURASSICX" [level=2] [ref=e42]
+            - paragraph [ref=e43]: 2h 40m
+        - article [ref=e44]:
+          - link "Sin imagen SPIDERMAN2026 2h 20m" [ref=e45] [cursor=pointer]:
+            - /url: /peliculas/5
+            - generic [ref=e46]: Sin imagen
+            - heading "SPIDERMAN2026" [level=2] [ref=e48]
+            - paragraph [ref=e49]: 2h 20m
+        - article [ref=e50]:
+          - link "Sin imagen AVATAR3 3h 10m" [ref=e51] [cursor=pointer]:
+            - /url: /peliculas/6
+            - generic [ref=e52]: Sin imagen
+            - heading "AVATAR3" [level=2] [ref=e54]
+            - paragraph [ref=e55]: 3h 10m
+        - article [ref=e56]:
+          - link "Sin imagen INTERSTELLAR2 2h 55m" [ref=e57] [cursor=pointer]:
+            - /url: /peliculas/7
+            - generic [ref=e58]: Sin imagen
+            - heading "INTERSTELLAR2" [level=2] [ref=e60]
+            - paragraph [ref=e61]: 2h 55m
+        - article [ref=e62]:
+          - link "Sin imagen GLADIATOR2 2h 35m" [ref=e63] [cursor=pointer]:
+            - /url: /peliculas/8
+            - generic [ref=e64]: Sin imagen
+            - heading "GLADIATOR2" [level=2] [ref=e66]
+            - paragraph [ref=e67]: 2h 35m
+        - article [ref=e68]:
+          - link "Sin imagen TOYSTORY5 1h 50m" [ref=e69] [cursor=pointer]:
+            - /url: /peliculas/9
+            - generic [ref=e70]: Sin imagen
+            - heading "TOYSTORY5" [level=2] [ref=e72]
+            - paragraph [ref=e73]: 1h 50m
+        - article [ref=e74]:
+          - link "Sin imagen BARBIE2 2h 0m" [ref=e75] [cursor=pointer]:
+            - /url: /peliculas/10
+            - generic [ref=e76]: Sin imagen
+            - heading "BARBIE2" [level=2] [ref=e78]
+            - paragraph [ref=e79]: 2h 0m
+        - article [ref=e80]:
+          - link [ref=e81] [cursor=pointer]:
+            - /url: /peliculas/12
+            - img "DRAGON BALL SUPER BROLY" [ref=e83]
+            - heading "DRAGON BALL SUPER BROLY" [level=2] [ref=e84]
+            - paragraph [ref=e85]: 2h 0m
+  - contentinfo [ref=e16]:
+    - paragraph [ref=e18]: Cine

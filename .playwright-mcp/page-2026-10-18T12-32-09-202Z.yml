@@ -1,0 +1,66 @@
+- generic [ref=f10e2]:
+  - region "Notifications alt+T"
+  - generic [ref=f10e5]:
+    - banner [ref=f10e6]:
+      - generic [ref=f10e7]:
+        - generic [ref=f10e8]:
+          - link [ref=f10e9] [cursor=pointer]:
+            - /url: /
+            - img "mini-logo" [ref=f10e10]
+          - generic [ref=f10e11]:
+            - button [ref=f10e12] [cursor=pointer]
+            - button [ref=f10e14] [cursor=pointer]
+        - img "User Avatar" [ref=f10e19] [cursor=pointer]
+    - main [ref=f10e20]:
+      - generic [ref=f10e22]:
+        - generic [ref=f10e23]:
+          - heading "Agregar película" [level=1] [ref=f10e24]
+          - paragraph [ref=f10e25]: Completa los datos de la nueva película.
+        - generic [ref=f10e26]:
+          - generic [ref=f10e27]:
+            - generic [ref=f10e28]: Título *
+            - textbox "Título *" [ref=f10e29]:
+              - /placeholder: El nombre de la película
+          - generic [ref=f10e30]:
+            - generic [ref=f10e31]: Sinopsis *
+            - textbox "Sinopsis *" [ref=f10e32]:
+              - /placeholder: De qué trata la película
+          - generic [ref=f10e33]:
+            - generic [ref=f10e34]:
+              - generic [ref=f10e35]: Duración (min) *
+              - spinbutton "Duración (min) *" [ref=f10e36]
+            - generic [ref=f10e37]:
+              - generic [ref=f10e38]: Fecha de estreno
+              - textbox "Fecha de estreno" [ref=f10e39]
+          - generic [ref=f10e40]:
+            - generic [ref=f10e41]:
+              - text: Activa
+              - paragraph [ref=f10e42]: Se muestra en el catálogo público.
+            - switch "Activa" [checked] [ref=f10e43] [cursor=pointer]
+            - checkbox [checked] [aria-hidden]
+          - group "Imágenes (opcional, hasta 5)" [ref=f10e44]:
+            - group [ref=f10e46]:
+              - generic [ref=f10e47]:
+                - button "Seleccionar imágenes" [ref=f10e48] [cursor=pointer]
+                - paragraph [ref=f10e53]: Arrastra y suelta aquí hasta 5 imágenes .jpg, .jpeg, .png o .webp de 5 MiB como máximo cada una.
+              - paragraph [ref=f10e54]: 0 de 5 imágenes adjuntas
+          - generic [ref=f10e55]:
+            - button "Cancelar" [ref=f10e56] [cursor=pointer]
+            - button "Guardar" [ref=f10e57] [cursor=pointer]
+    - contentinfo [ref=f10e58]:
+      - generic [ref=f10e60]:
+        - generic [ref=f10e61]:
+          - generic [ref=f10e62]: 2026 ©
+          - link "Keenthemes Inc." [ref=f10e63] [cursor=pointer]:
+            - /url: https://keenthemes.com
+        - navigation [ref=f10e64]:
+          - link "Docs" [ref=f10e65] [cursor=pointer]:
+            - /url: ""
+          - link "Purchase" [ref=f10e66] [cursor=pointer]:
+            - /url: https://1.envato.market/Vm7VRE
+          - link "FAQ" [ref=f10e67] [cursor=pointer]:
+            - /url: https://keenthemes.com/metronic
+          - link "Support" [ref=f10e68] [cursor=pointer]:
+            - /url: https://devs.keenthemes.com
+          - link "License" [ref=f10e69] [cursor=pointer]:
+            - /url: ""

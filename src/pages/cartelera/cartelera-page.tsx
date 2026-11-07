@@ -4,6 +4,9 @@ import {useState, useEffect} from 'react';
 import { Funcion } from '@/types/cartelera';
 import { carteleraService } from '@/services/cartelera.service';
 import { Container } from '@/components/common/container';
+import { useAuth } from '@/auth/context/auth-context';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 
 export const CarteleraPage = () => {
@@ -12,9 +15,13 @@ export const CarteleraPage = () => {
   
   useEffect(() =>{
     carteleraService.listarFunciones()
-    .then(setFunciones)
+    .then((respuesta) => setFunciones(respuesta.data))
   }, [])
   
+  const { tieneRol } = useAuth();
+  // RF-T6: el botón Crear función solo para roles autorizados (Administrador/Gerente)
+  const puedeCrearFuncion = tieneRol('Administrador', 'Gerente');
+
   return (
     <Container>
       <div className="space-y-6 py-6">
@@ -23,18 +30,25 @@ export const CarteleraPage = () => {
           <p className="text-sm text-muted-foreground">
            
           </p>
+          {puedeCrearFuncion && (
+            <div className="flex items-center justify-between">
+              <Button variant="primary" asChild>
+                <Link to="/funciones/nueva">Crear función</Link>
+              </Button>
+            </div>
+          )}
         </div>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {funciones.map((funcion) =>(
             
-            <article key={funcion.idFuncion} className="rounded-xl border border-border bg-card p-5">
-              <h2 className="font-medium text-mono">{funcion.pelicula}</h2>
+            <article key={funcion.id} className="rounded-xl border border-border bg-card p-5">
+              <h2 className="font-medium text-mono">{funcion.movie}</h2>
               <p className="mt-1 text-sm text-muted-foreground"> </p>
               <p className="mt-3 text-sm">
-                {funcion.fecha}
+                {funcion.date}
               </p>
               <p className="mt-3 text-lg font-semibold text-mono">
-               {funcion.precio}
+               {funcion.price}
               </p>
             </article>
           ))}

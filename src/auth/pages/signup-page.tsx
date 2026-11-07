@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useAuth } from '@/auth/context/auth-context';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { ScreenLoader } from '@/components/common/screen-loader';
+import {
+  Alert,
+  AlertContent,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+} from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -15,73 +24,148 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
-import { personaService } from '@/services/persona.service';
-import { getSignupSchema, SignupSchemaType } from '../forms/signup-shema';
+import { HttpError } from '@/lib/http';
+import { usuarioService } from '@/services/usuario.service';
+import { Usuario } from '@/types/seguridad';
+import { getSignupSchema, SignupSchemaType } from '../forms/signup-schema';
 
-// Campos de texto simples. Las contrasenas van aparte por el boton de ver
-const CAMPOS: {
-  name: keyof SignupSchemaType;
-  label: string;
-  type?: string;
-  placeholder?: string;
-}[] = [
-  { name: 'nombres', label: 'Nombres', placeholder: 'Sergio Luis' },
-  { name: 'apellidos', label: 'Apellidos', placeholder: 'Pérez López' },
-  { name: 'documento', label: 'Documento', placeholder: '12345678' },
-  { name: 'telefono', label: 'Teléfono', type: 'tel', placeholder: '70123456' },
-  { name: 'email', label: 'Correo', type: 'email', placeholder: 'ana@correo.com' },
-  // type date entrega "1995-05-20", el formato que pide el backend
-  { name: 'fechaNacimiento', label: 'Fecha de nacimiento', type: 'date' },
-  { name: 'usuario', label: 'Usuario', placeholder: 'ana.perez' },
-];
+// Mensajes generales del registro. Se mantienen en español y sin detalles
+// técnicos del servicio (RNF-2, RNF-3).
+const EMAIL_TAKEN_MESSAGE =
+  'Ese correo ya está registrado. Inicia sesión o usa otro correo.';
+const UNCONFIRMED_ACCOUNT_MESSAGE =
+  'No pudimos confirmar si tu cuenta quedó creada. Revisa tu conexión e inténtalo de nuevo.';
+const UNEXPECTED_ERROR_MESSAGE =
+  'No se pudo completar el registro. Inténtalo de nuevo en unos minutos.';
+const ACCOUNT_CREATED_MESSAGE =
+  'Tu cuenta quedó creada. Inicia sesión para continuar.';
 
+interface FormErrorState {
+  message: string;
+  showSigninLink: boolean;
+}
+
+/**
+ * Traduce el fallo del alta a un mensaje comprensible para la persona.
+ *
+ * La clasificación se hace por el estado HTTP que adjunta `HttpError`: un
+ * conflicto indica que el correo ya existe, una validación conserva el motivo
+ * legible del servicio, la ausencia de estado corresponde a red o tiempo de
+ * espera agotado y cualquier otro estado es un fallo no previsto.
+ */
+function describeCreationError(error: unknown): FormErrorState {
+  if (error instanceof HttpError) {
+    if (error.status === 409) {
+      return { message: EMAIL_TAKEN_MESSAGE, showSigninLink: true };
+    }
+
+    if (error.status === 400) {
+      return { message: error.message, showSigninLink: false };
+    }
+
+    if (error.status !== undefined) {
+      return { message: UNEXPECTED_ERROR_MESSAGE, showSigninLink: false };
+    }
+  }
+
+  // Sin estado HTTP no se sabe si el servicio llegó a crear la cuenta; se
+  // informa de que no se pudo confirmar (red, tiempo agotado o fallo ajeno).
+  return { message: UNCONFIRMED_ACCOUNT_MESSAGE, showSigninLink: false };
+}
+
+/**
+ * Pantalla pública de registro.
+ *
+ * Solo captura correo, contraseña y su confirmación. Al enviar crea la cuenta
+ * con el servicio, inicia sesión automáticamente y deja a la persona en el
+ * listado de películas. Si el alta ya se confirmó pero el inicio de sesión
+ * falla, el formulario se sustituye por un aviso para ingresar manualmente.
+ */
 export function SignUpPage() {
+  const { loading, isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
-  const [verContrasena, setVerContrasena] = useState(false);
-  const [procesando, setProcesando] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<FormErrorState | null>(null);
+  const [createdAccountEmail, setCreatedAccountEmail] = useState<
+    string | null
+  >(null);
+
+  // Guard adicional al estado: impide un segundo POST incluso si dos eventos
+  // de envío llegan antes de que React vuelva a pintar el botón deshabilitado.
+  const submittingRef = useRef(false);
 
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(getSignupSchema()),
     defaultValues: {
-      nombres: '',
-      apellidos: '',
-      documento: '',
-      telefono: '',
       email: '',
-      fechaNacimiento: '',
-      usuario: '',
-      constrasena: '',
-      confirmar: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
-  async function onSubmit(values: SignupSchemaType) {
-    try {
-      setProcesando(true);
-      setError(null);
+  // No se pinta el formulario hasta saber si hay sesión (RF-2).
+  if (loading) {
+    return <ScreenLoader />;
+  }
 
-      // confirmar solo sirve aqui: el backend rechaza campos que no conoce.
-      // Y nunca se manda "rol": el backend pone CLIENTE por defecto
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { confirmar, ...datos } = values;
-      console.log('>>> registrando usuario:', datos.usuario);
+  // Una persona con sesión no puede registrar otra cuenta (RF-3).
+  if (isAuthenticated) {
+    return <Navigate to="/peliculas" replace />;
+  }
 
-      const respuesta = await personaService.registrar(datos);
-      console.log('>>> respuesta del registro:', respuesta);
-
-      alert(`Cuenta creada para ${respuesta.data.nombres}. Ya puedes ingresar.`);
-      navigate('/auth/signin');
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'No se pudo crear la cuenta. Intenta de nuevo.',
-      );
-    } finally {
-      setProcesando(false);
+  async function onSubmit({ email, password }: SignupSchemaType) {
+    if (submittingRef.current) {
+      return;
     }
+
+    submittingRef.current = true;
+    setSubmitting(true);
+    setFormError(null);
+
+    let usuario: Usuario;
+
+    try {
+      // `email` ya llega normalizado por el esquema y la confirmación nunca se
+      // envía al servicio (RF-16, RF-17).
+      usuario = await usuarioService.crear({ email, password });
+    } catch (error) {
+      setFormError(describeCreationError(error));
+
+      if (error instanceof HttpError && error.status === 409) {
+        // Correo duplicado: se conserva el correo (en su forma normalizada) y
+        // se limpian las contraseñas para pasar a iniciar sesión (RF-20).
+        form.setValue('email', email);
+        form.setValue('password', '');
+        form.setValue('confirmPassword', '');
+      }
+
+      submittingRef.current = false;
+      setSubmitting(false);
+      return;
+    }
+
+    // La cuenta ya existe. Cualquier fallo desde aquí se informa como cuenta
+    // creada (RF-24), sin volver a registrarla.
+    try {
+      // El auto-login usa el username devuelto por el alta, sin normalizarlo
+      // de nuevo (RF-18).
+      await login(usuario.username, password);
+    } catch {
+      setCreatedAccountEmail(usuario.username || email);
+      form.setValue('password', '');
+      form.setValue('confirmPassword', '');
+      return;
+    } finally {
+      submittingRef.current = false;
+      setSubmitting(false);
+    }
+
+    // El registro siempre termina en el listado de películas, sin usar `next`
+    // (RF-19).
+    navigate('/peliculas', { replace: true });
   }
 
   return (
@@ -93,109 +177,167 @@ export function SignUpPage() {
         </p>
       </div>
 
-      {error && (
-        <Alert variant="destructive">
+      {createdAccountEmail ? (
+        <Alert variant="success" appearance="light">
           <AlertIcon>
-            <AlertCircle className="h-4 w-4" />
+            <CheckCircle2 className="h-4 w-4" />
           </AlertIcon>
-          <AlertTitle>{error}</AlertTitle>
+          <AlertContent>
+            <AlertTitle>{ACCOUNT_CREATED_MESSAGE}</AlertTitle>
+            <AlertDescription className="space-y-3">
+              <p>
+                Correo:{' '}
+                <span className="font-medium">{createdAccountEmail}</span>
+              </p>
+              <Button asChild variant="primary" className="w-full">
+                <Link to="/auth/signin">Iniciar sesión</Link>
+              </Button>
+            </AlertDescription>
+          </AlertContent>
         </Alert>
-      )}
-
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {CAMPOS.map((campo) => (
-            <FormField
-              key={campo.name}
-              control={form.control}
-              name={campo.name}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{campo.label}</FormLabel>
-                  <FormControl>
-                    <Input
-                      type={campo.type ?? 'text'}
-                      placeholder={campo.placeholder}
-                      disabled={procesando}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-
-          <FormField
-            control={form.control}
-            name="constrasena"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contraseña</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Input
-                      type={verContrasena ? 'text' : 'password'}
-                      placeholder="Mínimo 6 caracteres"
-                      autoComplete="new-password"
-                      disabled={procesando}
-                      {...field}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setVerContrasena((v) => !v)}
-                      className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                      aria-label={
-                        verContrasena
-                          ? 'Ocultar contraseña'
-                          : 'Mostrar contraseña'
-                      }
+      ) : (
+        <>
+          {formError && (
+            <Alert variant="destructive">
+              <AlertIcon>
+                <AlertCircle className="h-4 w-4" />
+              </AlertIcon>
+              <AlertContent>
+                <AlertTitle>{formError.message}</AlertTitle>
+                {formError.showSigninLink && (
+                  <AlertDescription>
+                    <Link
+                      to="/auth/signin"
+                      className="font-medium text-primary hover:underline"
                     >
-                      {verContrasena ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                      Iniciar sesión
+                    </Link>
+                  </AlertDescription>
+                )}
+              </AlertContent>
+            </Alert>
+          )}
 
-          <FormField
-            control={form.control}
-            name="confirmar"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Repite la contraseña</FormLabel>
-                <FormControl>
-                  <Input
-                    type={verContrasena ? 'text' : 'password'}
-                    autoComplete="new-password"
-                    disabled={procesando}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              noValidate
+              className="space-y-4"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Correo</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="ana@correo.com"
+                        autoComplete="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          <Button type="submit" className="w-full" disabled={procesando}>
-            {procesando && <Spinner className="me-2 h-4 w-4 animate-spin" />}
-            {procesando ? 'Creando cuenta…' : 'Crear cuenta'}
-          </Button>
-        </form>
-      </Form>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Contraseña</FormLabel>
+                    <div className="relative">
+                      <FormControl>
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          autoComplete="new-password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((visible) => !visible)}
+                        className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label={
+                          showPassword
+                            ? 'Ocultar contraseña'
+                            : 'Mostrar contraseña'
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                    <FormDescription>Entre 6 y 100 caracteres</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-      <p className="text-center text-sm text-muted-foreground">
-        ¿Ya tienes cuenta?{' '}
-        <Link to="/auth/signin" className="font-medium text-primary hover:underline">
-          Ingresa
-        </Link>
-      </p>
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Repite la contraseña</FormLabel>
+                    <div className="relative">
+                      <FormControl>
+                        <Input
+                          type={showConfirmation ? 'text' : 'password'}
+                          autoComplete="new-password"
+                          {...field}
+                        />
+                      </FormControl>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmation((visible) => !visible)
+                        }
+                        className="absolute end-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        aria-label={
+                          showConfirmation
+                            ? 'Ocultar repetición de la contraseña'
+                            : 'Mostrar repetición de la contraseña'
+                        }
+                      >
+                        {showConfirmation ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="submit" className="w-full" disabled={submitting}>
+                {submitting && (
+                  <Spinner className="me-2 h-4 w-4 animate-spin" />
+                )}
+                {submitting ? 'Creando cuenta…' : 'Crear cuenta'}
+              </Button>
+            </form>
+          </Form>
+
+          <p className="text-center text-sm text-muted-foreground">
+            ¿Ya tienes cuenta?{' '}
+            <Link
+              to="/auth/signin"
+              className="font-medium text-primary hover:underline"
+            >
+              Ingresa
+            </Link>
+          </p>
+        </>
+      )}
     </div>
   );
 }

@@ -1,0 +1,104 @@
+- generic [ref=f3e2]:
+  - region "Notifications alt+T"
+  - banner [ref=f3e4]:
+    - generic [ref=f3e5]:
+      - link "CINE" [ref=f3e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=f3e7]:
+        - link "Pelicula" [ref=f3e8] [cursor=pointer]:
+          - /url: /pelicula
+      - link "Ingresar" [ref=f3e9] [cursor=pointer]:
+        - /url: /auth/signin
+  - main [ref=f3e10]:
+    - generic [ref=f3e12]:
+      - generic [ref=f3e13]:
+        - heading "Película" [level=1] [ref=f3e14]
+        - link "Agregar película" [ref=f3e15] [cursor=pointer]:
+          - /url: /peliculas/nueva
+      - generic [ref=f3e20]:
+        - article [ref=f3e21]:
+          - link "Sin imagen VENGADORES 3h 0m" [ref=f3e22] [cursor=pointer]:
+            - /url: /peliculas/1
+            - generic [ref=f3e23]: Sin imagen
+            - heading "VENGADORES" [level=2] [ref=f3e25]
+            - paragraph [ref=f3e26]: 3h 0m
+        - article [ref=f3e27]:
+          - link "Sin imagen BATMAN2026 2h 30m" [ref=f3e28] [cursor=pointer]:
+            - /url: /peliculas/2
+            - generic [ref=f3e29]: Sin imagen
+            - heading "BATMAN2026" [level=2] [ref=f3e31]
+            - paragraph [ref=f3e32]: 2h 30m
+        - article [ref=f3e33]:
+          - link "Sin imagen MATRIX5 2h 50m" [ref=f3e34] [cursor=pointer]:
+            - /url: /peliculas/3
+            - generic [ref=f3e35]: Sin imagen
+            - heading "MATRIX5" [level=2] [ref=f3e37]
+            - paragraph [ref=f3e38]: 2h 50m
+        - article [ref=f3e39]:
+          - link "Sin imagen JURASSICX 2h 40m" [ref=f3e40] [cursor=pointer]:
+            - /url: /peliculas/4
+            - generic [ref=f3e41]: Sin imagen
+            - heading "JURASSICX" [level=2] [ref=f3e43]
+            - paragraph [ref=f3e44]: 2h 40m
+        - article [ref=f3e45]:
+          - link "Sin imagen SPIDERMAN2026 2h 20m" [ref=f3e46] [cursor=pointer]:
+            - /url: /peliculas/5
+            - generic [ref=f3e47]: Sin imagen
+            - heading "SPIDERMAN2026" [level=2] [ref=f3e49]
+            - paragraph [ref=f3e50]: 2h 20m
+        - article [ref=f3e51]:
+          - link "Sin imagen AVATAR3 3h 10m" [ref=f3e52] [cursor=pointer]:
+            - /url: /peliculas/6
+            - generic [ref=f3e53]: Sin imagen
+            - heading "AVATAR3" [level=2] [ref=f3e55]
+            - paragraph [ref=f3e56]: 3h 10m
+        - article [ref=f3e57]:
+          - link "Sin imagen INTERSTELLAR2 2h 55m" [ref=f3e58] [cursor=pointer]:
+            - /url: /peliculas/7
+            - generic [ref=f3e59]: Sin imagen
+            - heading "INTERSTELLAR2" [level=2] [ref=f3e61]
+            - paragraph [ref=f3e62]: 2h 55m
+        - article [ref=f3e63]:
+          - link "Sin imagen GLADIATOR2 2h 35m" [ref=f3e64] [cursor=pointer]:
+            - /url: /peliculas/8
+            - generic [ref=f3e65]: Sin imagen
+            - heading "GLADIATOR2" [level=2] [ref=f3e67]
+            - paragraph [ref=f3e68]: 2h 35m
+        - article [ref=f3e69]:
+          - link "Sin imagen TOYSTORY5 1h 50m" [ref=f3e70] [cursor=pointer]:
+            - /url: /peliculas/9
+            - generic [ref=f3e71]: Sin imagen
+            - heading "TOYSTORY5" [level=2] [ref=f3e73]
+            - paragraph [ref=f3e74]: 1h 50m
+        - article [ref=f3e75]:
+          - link "Sin imagen BARBIE2 2h 0m" [ref=f3e76] [cursor=pointer]:
+            - /url: /peliculas/10
+            - generic [ref=f3e77]: Sin imagen
+            - heading "BARBIE2" [level=2] [ref=f3e79]
+            - paragraph [ref=f3e80]: 2h 0m
+        - article [ref=f3e81]:
+          - link [ref=f3e82] [cursor=pointer]:
+            - /url: /peliculas/12
+            - img "DRAGON BALL SUPER BROLY" [ref=f3e84]
+            - heading "DRAGON BALL SUPER BROLY" [level=2] [ref=f3e85]
+            - paragraph [ref=f3e86]: 2h 0m
+        - article [ref=f3e87]:
+          - link "Sin imagen ZZ TEST T9 D1B 20261018-1240 1h 30m" [ref=f3e88] [cursor=pointer]:
+            - /url: /peliculas/14
+            - generic [ref=f3e89]: Sin imagen
+            - heading "ZZ TEST T9 D1B 20261018-1240" [level=2] [ref=f3e91]
+            - paragraph [ref=f3e92]: 1h 30m
+        - article [ref=f3e93]:
+          - link "Sin imagen ZZ TEST T9 D3 20261018-1245 1h 17m" [ref=f3e94] [cursor=pointer]:
+            - /url: /peliculas/15
+            - generic [ref=f3e95]: Sin imagen
+            - heading "ZZ TEST T9 D3 20261018-1245" [level=2] [ref=f3e97]
+            - paragraph [ref=f3e98]: 1h 17m
+        - article [ref=f3e99]:
+          - link "Sin imagen TMP CURL T9 INACTIVA 10m" [ref=f3e100] [cursor=pointer]:
+            - /url: /peliculas/16
+            - generic [ref=f3e101]: Sin imagen
+            - heading "TMP CURL T9 INACTIVA" [level=2] [ref=f3e103]
+            - paragraph [ref=f3e104]: 10m
+  - contentinfo [ref=f3e17]:
+    - paragraph [ref=f3e19]: Cine

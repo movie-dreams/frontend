@@ -31,8 +31,8 @@ export function FuncionAsientosPage() {
             carteleraService.listarFunciones(),
         ])
             .then(([butacas, funciones]) => {
-                setAsientos(butacas);
-                setFuncion(funciones.find((f) => f.idFuncion === idFuncion));
+                setAsientos(butacas.data);
+                setFuncion(funciones.data.find((f) => f.id === idFuncion));
             })
             .catch((e: Error) => setError(e.message))
             .finally(() => setCargando(false))
@@ -42,16 +42,16 @@ export function FuncionAsientosPage() {
     const porFila = useMemo(() => {
         const mapa = new Map<string, Asiento[]>();
         for (const asiento of asientos) {
-            const fila = mapa.get(asiento.fila) ?? [];
+            const fila = mapa.get(asiento.row) ?? [];
             fila.push(asiento);
-            mapa.set(asiento.fila, fila);
+            mapa.set(asiento.row, fila);
         }
 
         return [...mapa.entries()]
             .sort(([a], [b]) => a.localeCompare(b))
             .map(([fila, butacas]) => ({
                 fila,
-                butacas: butacas.sort((x, y) => x.numero - y.numero),
+                butacas: butacas.sort((x, y) => x.number - y.number),
             })
             )
 
@@ -65,11 +65,11 @@ export function FuncionAsientosPage() {
         )
     }
 
-    const total = elegidos.length * (funcion?.precio ?? 0)
+    const total = elegidos.length * (funcion?.price ?? 0)
 
     const nombresElegidos = asientos
-        .filter((a) => elegidos.includes(a.idAsiento))
-        .map((a) => a.asiento)
+        .filter((a) => elegidos.includes(a.id))
+        .map((a) => a.seat)
         .join(', ');
 
 
@@ -100,19 +100,18 @@ export function FuncionAsientosPage() {
             setError(null);
 
             const respuesta = await reservaService.crear({
-                idCliente: user.id,
-                idFuncion: funcion.idFuncion,
-                fechaReserva: new Date().toISOString(),
-                codigoReserva: reservaService.generarCodigo(funcion.idFuncion),
-                estado: 'PENDIENTE',
+                clientId: user.id,
+                showtimeId: funcion.id,
+                reservationCode: reservaService.generarCodigo(funcion.id),
+                status: 'PENDIENTE',
                 total,
-                detalles: elegidos.map((idAsiento) => ({
-                    idAsiento,
-                    precio: funcion.precio,
+                details: elegidos.map((seatId) => ({
+                    seatId,
+                    price: funcion.price,
                 })),
             });
 
-            alert(`Reserva creada: ${respuesta.data.reserva.codigo}`);
+            alert(`Reserva creada: ${respuesta.reservation.reservationCode}`);
             navigate('/peliculas')
         } catch (e) {
             setError((e as Error).message);
@@ -130,16 +129,16 @@ export function FuncionAsientosPage() {
             <div className="py-8">
                 {
                     funcion && (
-                        <Link to={`/peliculas/${funcion.idPelicula}`} className="">
-                            volver a {funcion.pelicula}
+                        <Link to={`/peliculas/${funcion.movieId}`} className="">
+                            volver a {funcion.movie}
                         </Link>
                     )
                 }
                 <div className="mt-4">
-                    <h1 className="text-2xl font-semibold tracking-tight text-mono"> {funcion?.pelicula ?? 'Funcion'} </h1>
+                    <h1 className="text-2xl font-semibold tracking-tight text-mono"> {funcion?.movie ?? 'Funcion'} </h1>
                     {/* { funcion && (
                 <p>
-                    {funcion.sala} - {funcion.tipoSala}
+                    {funcion.room} - {funcion.roomType}
                 </p>
             )} */}
                 </div>
@@ -159,26 +158,26 @@ export function FuncionAsientosPage() {
                                     <span className="w-5 text-xs text-muted-foreground"> {fila} </span>
                                     <div className="flex gap-1.5">
                                         {butacas.map((butaca) => {
-                                            const elegido = elegidos.includes(butaca.idAsiento);
+                                            const elegido = elegidos.includes(butaca.id);
                                             return (
                                                 // BOTON MEJORADOCON ESTILOS
                                                 <button
-                                                    key={butaca.idAsiento}
+                                                    key={butaca.id}
                                                     type="button"
                                                     // Las ocupadas no se pueden pulsar
-                                                    disabled={!butaca.disponible}
-                                                    onClick={() => alternar(butaca.idAsiento)}
-                                                    title={butaca.asiento}
+                                                    disabled={!butaca.available}
+                                                    onClick={() => alternar(butaca.id)}
+                                                    title={butaca.seat}
                                                     className={[
                                                         'size-7 rounded text-[10px] transition-colors',
-                                                        !butaca.disponible
+                                                        !butaca.available
                                                             ? 'cursor-not-allowed bg-muted text-muted-foreground/40'
                                                             : elegido
                                                                 ? 'bg-primary text-primary-foreground'
                                                                 : 'bg-secondary hover:bg-primary/30',
                                                     ].join(' ')}
                                                 >
-                                                    {butaca.numero}
+                                                    {butaca.number}
                                                 </button>
                                             )
                                         })}
